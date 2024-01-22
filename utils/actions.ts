@@ -35,19 +35,6 @@ const FormSchema = z.object({
   thumbnail: z.coerce.string().optional(),
 });
 
-export async function retrieveUsers() {
-  try {
-    const result = await prisma.post.findMany();
-    console.log("Successfully retrieved users");
-    return result;
-  } catch (err) {
-    console.log("Failed to fetch users data");
-    console.error(err);
-  } finally {
-    await prisma.$disconnect();
-  }
-}
-
 export async function createUser(
   prevState: UserStateProps,
   formData: FormData
