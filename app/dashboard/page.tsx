@@ -47,7 +47,7 @@ export default async function Page() {
               alt={post.title}
               title={post.title}
               priority
-              className="object-contain"
+              className="block mx-auto object-contain"
             />
           </div>
           <p className="text-base font-medium text-slate-600">{post.details}</p>
