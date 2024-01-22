@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { prisma } from "./prisma-client";
 import { z } from "zod";
+import { put } from "@vercel/blob";
 import { PostStateProps, UserStateProps } from "./definitions";
 
 const UserSchema = z.object({
@@ -33,6 +34,19 @@ const FormSchema = z.object({
     .min(1),
   thumbnail: z.coerce.string().optional(),
 });
+
+export async function retrieveUsers() {
+  try {
+    const result = await prisma.post.findMany();
+    console.log("Successfully retrieved users");
+    return result;
+  } catch (err) {
+    console.log("Failed to fetch users data");
+    console.error(err);
+  } finally {
+    await prisma.$disconnect();
+  }
+}
 
 export async function createUser(
   prevState: UserStateProps,
@@ -78,14 +92,17 @@ export async function createUser(
 }
 
 export async function createPost(prev: PostStateProps, formData: FormData) {
-  console.log(formData);
+  const imageFile = formData.get("fileUpload") as File;
+  const blob = await put(imageFile.name, imageFile, {
+    access: "public",
+  });
 
   const validatedFields = FormSchema.safeParse({
     email: formData.get("email"),
     title: formData.get("title"),
     description: formData.get("description"),
     details: formData.get("details"),
-    thumbnail: formData.get("fileUpload") as File,
+    thumbnail: blob.url,
   });
 
   if (!validatedFields.success) {

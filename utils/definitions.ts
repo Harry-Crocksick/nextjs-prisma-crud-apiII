@@ -4,6 +4,17 @@ export type BtnProps = {
   btnType: "submit" | "button" | "reset";
 };
 
+export type PostProps = {
+  id: number;
+  title: string;
+  description: string;
+  thumbnail: string | null;
+  details: string;
+  userId: number;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export type UserStateProps = {
   errors?: {
     firstName?: string[];
