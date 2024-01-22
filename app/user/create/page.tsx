@@ -1,7 +1,7 @@
 "use client";
 
 import { useFormState } from "react-dom";
-import { Button } from "@/app/post/create/page";
+import Button from "@/utils/Button";
 import { createUser } from "@/utils/actions";
 
 export default function Example() {
